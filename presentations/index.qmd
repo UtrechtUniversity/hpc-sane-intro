@@ -63,7 +63,8 @@ Run VMs (*workspaces*) preconfigured for many different research needs:
 ::: {style="text-align: left; margin-top: 2em"}
 SANE is a ResearchCloud environment tailored for working with sensitive data.
 
-- Data Provider (usually a third party) vs Researcher
+- Data Provider vs Researcher
+  * Data sharing agreement should be in place.
 - Customizability of workspaces has been curtailed. Researchers' workspaces do not have internet access once they have been created.
 - SANE environments have been especially tested for vulnerabilities (pen tested).
 
@@ -77,6 +78,19 @@ SANE is a severely *restricted* ResearchCloud environment tailored for working w
   * Data cannot leave researcher's workspace
 - Blind SANE
   * Data does not even enter researchers' workspace
+
+:::
+
+## Tinker SANE
+::: {style="text-align: left; margin-top: 2em"}
+Workflow:
+
+1. Dataprovider uploads data.
+1. Researcher starts analysis workspace (*data is accessible!*)
+1. Researcher performs analyses.
+1. Researcher saves results.
+1. Dataprovider verifies results, ensures they contain no sensitive data.
+1. Dataprovider exports the results, shares with researcher.
 
 :::
 
@@ -142,11 +156,9 @@ Try logging in to each of the workspaces you see:
 
 Access the SANE Data Provider Portal and upload a file to the directory `This PC\sane-data\source`.
 
-You can use the example input files from:
+You can use the example input files from [this repository](https://github.com/UtrechtUniversity/src-python-example.git).
 
-https://github.com/UtrechtUniversity/src-python-example.git
-
-Try uploading the file `data/input_data/osm_roads.shp` from that repo.
+Upload the file `data/input_data/osm_roads.shp` from that repository.
 
 ## Researcher: analysis
 
