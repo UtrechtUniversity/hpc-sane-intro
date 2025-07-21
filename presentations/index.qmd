@@ -1,0 +1,229 @@
+--- 
+format: 
+  revealjs:
+    author: Dawa Ometto
+    theme: themes/uu.scss
+    logo: images/UU_logo_2021_EN_RGB.png
+    footer: "https://edu.nl/gwncr"
+---
+
+# Secure Analysis Environment (SANE) {data-background-color="#FFCD00"}
+::: {style="text-align: left; margin-left: 2em"}
+
+Working with sensitive data on SURF ResearchCloud.
+:::
+
+## Before we start...
+
+Make sure that...
+
+- you've accepted the SRAM invite
+- you have a Remote Desktop (RDP) client installed
+
+## Program
+
+- What is ResearchCloud?
+- What is SANE?
+- Practice: creating SANE analysis workspaces
+- Practice: data management and analysis 
+- Bonus: working with data on Yoda using iBridges
+- Bonus: creating SANE setup
+
+## Links
+
+- These slides: [https://edu.nl/gwncr](https://edu.nl/gwncr)
+- [ResearchCloud Portal](https://portal.live.surfresearchcloud.nl/)
+- [SRAM Portal](https://sram.surf.nl/)
+- [UU ResearchCloud documentation](https://utrechtuniversity.github.io/vre-docs/)
+
+## What is ResearchCloud?
+::: {style="text-align: left; margin-top: 2em"}
+
+On-demand cloud resources (compute & storage) in a user-friendly platform.
+
+- Easy collaboration in and across institutions.
+- Special applications, customizable environments.
+- Deploy on different cloud infrastructures.
+
+:::
+
+
+## ResearchCloud
+::: {style="text-align: left; margin-top: 2em"}
+Run VMs (*workspaces*) preconfigured for many different research needs:
+
+- Programming and analysis (e.g. R-Studio, Jupyter, Matlab).
+- Analysis tools (e.g. ASReview, 4CAT).
+- Field-specific software (e.g. GIS).
+- Webservices (e.g. Galaxy).
+- ...or simply your own desktop or commandline machine in the cloud.
+:::
+
+## SANE
+::: {style="text-align: left; margin-top: 2em"}
+SANE is a ResearchCloud environment tailored for working with sensitive data.
+
+- Data Provider (usually a third party) vs Researcher
+- Customizability of workspaces has been curtailed. Researchers' workspaces do not have internet access once they have been created.
+- SANE environments have been especially tested for vulnerabilities (pen tested).
+
+:::
+
+## SANE
+::: {style="text-align: left; margin-top: 2em"}
+SANE is a severely *restricted* ResearchCloud environment tailored for working with sensitive data.
+
+- Tinker SANE
+  * Data cannot leave researcher's workspace
+- Blind SANE
+  * Data does not even enter researchers' workspace
+
+:::
+
+## Tinker SANE
+
+<img src="./images/sane.png" />
+
+## ResearchCloud Terminology
+::: {style="text-align: left; margin-top: 2em"}
+
+- Workspace
+- Catalog items
+- Storage unit
+- Collaboration
+  * Groups
+
+:::
+
+## Collaborations
+
+[SRAM](https://sram.surf.nl/):
+
+- You control who you invite
+- Admins can assign users to different *groups*:
+  - *src_co_wallet*
+  - *src_co_admin*
+  - *src_co_developer*
+
+For this tutorial, some of you are assigned to the `src_co_admin` group. Log in to [SRAM](https://sram.surf.nl/) and note your assigned groups.
+
+## ResearchCloud Portal
+
+Everyone in the same  *Collaboration* can *see* each other's *workspaces*. Note the workspaces you see:
+
+- SANE Data Provider Portal
+- SANE Data Server
+- SANE Tinker UU Windows
+
+In order to login, setup your ResearchCloud [time-based password](https://servicedesk.surf.nl/wiki/spaces/WIKI/pages/9798290/Log+in+to+your+workspace#Logintoyourworkspace-WorkspaceAccesswithTOTP).
+
+## ResearchCloud Portal
+
+Try logging in to each of the workspaces you see:
+
+- SANE Tinker UU Windows
+  * [Login using your Remote Desktop client](https://utrechtuniversity.github.io/vre-docs/docs/first-steps.html#remote-desktop-protocol)
+- SANE Data Provider Portal
+  * Login by clicking the yellow 'Access' button
+- SANE File Server
+  * ? Can you login?
+
+## Creating SANE analysis workspace
+
+- Click 'Create New' in the portal
+- Select the SANE CO
+- Select the *SANE Tinker UU Windows* Catalog Item
+- Select the private network
+- Continue
+
+**NOTE: creating this workspaces will take > 40 mins**
+
+## Data Provider: upload data
+
+Access the SANE Data Provider Portal and upload a file to the directory `This PC\sane-data\source`.
+
+You can use the example input files from:
+
+https://github.com/UtrechtUniversity/src-python-example.git
+
+Try uploading the file `data/input_data/osm_roads.shp` from that repo.
+
+## Researcher: analysis
+
+Files made available by the dataprovider will be accessible in `This PC\sane-data\source`.
+
+**NOTE: all researchers can see all files in `This PC\sane-data\`!**
+
+- Check that you can open the files.
+- If you want, you can run a simple 'analysis' on them using Jupyter Notebooks
+  * see next slide
+
+## Researcher: analysis
+
+```python
+import os
+
+# Define path to folder
+input_folder = "/This PC/sane-data/source"
+
+# Join folder path and filename
+fp = os.path.join(input_folder, "osm_roads.shp")
+
+data = open(fp)
+result = len(data) # get the length of the data
+
+print(result)
+
+# Write the result
+output_folder = "/This PC/sane-data/results"
+# Change `myname` below
+output = os.path.join(output_folder, "result_myname.txt")
+with open(output, "a") as f:
+  f.write(result)
+```
+
+## Data provider: download results
+
+Once the researcher is finished, you should be able to find and download the results.
+
+## Researcher: analysis
+
+What if we try a more 'real' example? Add and run the following code to your notebook:
+
+```python
+import geopandas as gpd
+
+# Read file using gpd.read_file()
+data = gpd.read_file(fp)
+```
+
+...what happens?
+
+## Researcher: analysis
+
+Oops! The `geopandas` package is not available. You can see the available packages [here](https://gitlab.com/rsc-surf-nl/co-create-plugins/sane-tinker-python-packages/-/raw/main/requirements.txt).
+
+What if we try to install the needed package?
+
+Run the following command in your notebook and observe:
+
+`pip install geopandas`
+
+## Bonus: data transfer from Yoda
+
+What if we don't want to upload/download data to/from the Data Provider Portal to/from the dataprovider's laptop?
+
+We can fetch the data directly from Yoda!
+
+1. Use `ssh` to login to the SANE Data Provider Portal ([howto](https://utrechtuniversity.github.io/vre-docs/docs/first-steps.html#ssh)).
+1. `sudo apt install pipx` (press `Y` and enter)
+1. `pipx ensurepath`
+1. `pipx install ibridges`
+1. Verify: `ibridges --help`
+1. [iBridges manual](https://utrechtuniversity.github.io/vre-docs/docs/manuals/ibridges.html)
+
+## Bonus: tinker SANE setup
+
+Let's delete all existing SANE workspaces and re-create the setup!
+
+- [Instructions](https://servicedesk.surf.nl/wiki/spaces/WIKI/pages/96207241/Data+provider+instructions#Dataproviderinstructions-3.Preparetheuploadenvironment)
