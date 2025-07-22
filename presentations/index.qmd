@@ -172,27 +172,9 @@ Files made available by the dataprovider will be accessible in `This PC\sane-dat
 
 ## Researcher: analysis
 
-```python
-import os
-
-# Define path to folder
-input_folder = "/This PC/sane-data/source"
-
-# Join folder path and filename
-fp = os.path.join(input_folder, "osm_roads.shp")
-
-data = open(fp)
-result = len(data) # get the length of the data
-
-print(result)
-
-# Write the result
-output_folder = "/This PC/sane-data/results"
-# Change `myname` below
-output = os.path.join(output_folder, "result_myname.txt")
-with open(output, "a") as f:
-  f.write(result)
-```
+- Open the Jupyter notebook in the `sane-data/scripts` folder, have a look at the code.
+- Run the code
+- Copy the results file from your home directory to the `sane-data/results` directory
 
 ## Data provider: download results
 
